@@ -17541,6 +17541,8 @@ namespace ts {
         }
 
         function checkJsxAttribute(node: JsxAttribute, checkMode?: CheckMode) {
+            checkGrammarJsxIdentifier(node.name);
+
             return node.initializer
                 ? checkExpressionForMutableLocation(node.initializer, checkMode)
                 : trueType;  // <Elem attr /> is sugar for <Elem attr={true} />
@@ -29688,6 +29690,10 @@ namespace ts {
         }
 
         function checkGrammarJsxElement(node: JsxOpeningLikeElement) {
+            if (node.tagName.kind === SyntaxKind.Identifier) {
+                checkGrammarJsxIdentifier(node.tagName as Identifier);
+            }
+
             checkGrammarTypeArguments(node, node.typeArguments);
             const seen = createUnderscoreEscapedMap<boolean>();
 
@@ -29708,6 +29714,13 @@ namespace ts {
                     return grammarErrorOnNode(initializer, Diagnostics.JSX_attributes_must_only_be_assigned_a_non_empty_expression);
                 }
             }
+        }
+
+        function checkGrammarJsxIdentifier(node: Identifier): boolean {
+            if (node.isJsxNamespacedName && compilerOptions.jsx !== JsxEmit.Preserve) {
+                return grammarErrorOnNode(node, Diagnostics.JSX_namespaced_names_are_not_supported_unless_using_jsx_preserve);
+            }
+            return true;
         }
 
         function checkGrammarForInOrForOfStatement(forInOrOfStatement: ForInOrOfStatement): boolean {

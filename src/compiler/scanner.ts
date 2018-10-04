@@ -1934,8 +1934,16 @@ namespace ts {
                 const firstCharPosition = pos;
                 while (pos < end) {
                     const ch = text.charCodeAt(pos);
-                    if (ch === CharacterCodes.minus || ((firstCharPosition === pos) ? isIdentifierStart(ch, languageVersion) : isIdentifierPart(ch, languageVersion))) {
+                    if (
+                        ch === CharacterCodes.minus ||
+                        (ch === CharacterCodes.colon && !(tokenFlags & TokenFlags.JsxNamespacedIdentifier)) ||
+                        ((firstCharPosition === pos) ? isIdentifierStart(ch, languageVersion) : isIdentifierPart(ch, languageVersion))
+                    ) {
                         pos++;
+
+                        if (ch === CharacterCodes.colon) {
+                            tokenFlags |= TokenFlags.JsxNamespacedIdentifier;
+                        }
                     }
                     else {
                         break;

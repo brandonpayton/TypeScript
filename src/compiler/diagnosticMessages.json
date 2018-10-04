@@ -4245,6 +4245,10 @@
         "category": "Error",
         "code": 17017
     },
+    "JSX namespaced names are not supported unless using '--jsx preserve'.": {
+        "category": "Error",
+        "code": 17018
+    },
 
     "Circularity detected while resolving configuration: {0}": {
         "category": "Error",

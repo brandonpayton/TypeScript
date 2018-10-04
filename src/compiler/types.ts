@@ -690,6 +690,7 @@ namespace ts {
         isInJSDocNamespace?: boolean;                             // if the node is a member in a JSDoc namespace
         /*@internal*/ typeArguments?: NodeArray<TypeNode | TypeParameterDeclaration>; // Only defined on synthesized nodes. Though not syntactically valid, used in emitting diagnostics, quickinfo, and signature help.
         /*@internal*/ jsdocDotPos?: number;                       // Identifier occurs in JSDoc-style generic: Id.<T>
+        /*@internal*/ isJsxNamespacedName?: boolean;              // If the Identifer is a JSX namespaced name like `namespaceName:name`.
     }
 
     // Transient identifier node (marked by id === -1)
@@ -1582,7 +1583,8 @@ namespace ts {
         OctalSpecifier = 1 << 8,    // e.g. `0o777`
         ContainsSeparator = 1 << 9, // e.g. `0b1100_0101`
         BinaryOrOctalSpecifier = BinarySpecifier | OctalSpecifier,
-        NumericLiteralFlags = Scientific | Octal | HexSpecifier | BinarySpecifier | OctalSpecifier | ContainsSeparator
+        NumericLiteralFlags = Scientific | Octal | HexSpecifier | BinarySpecifier | OctalSpecifier | ContainsSeparator,
+        JsxNamespacedIdentifier = 1 << 10   // e.g. `namespacedName:name`
     }
 
     export interface NumericLiteral extends LiteralExpression {

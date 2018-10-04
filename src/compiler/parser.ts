@@ -1338,6 +1338,12 @@ namespace ts {
                     node.originalKeywordKind = token();
                 }
                 node.escapedText = escapeLeadingUnderscores(internIdentifier(scanner.getTokenValue()));
+
+                // Avoid defining `isJsxNamespacedName` when it's not applicable.
+                if (scanner.getTokenFlags() & TokenFlags.JsxNamespacedIdentifier) {
+                    node.isJsxNamespacedName = true;
+                }
+
                 nextToken();
                 return finishNode(node);
             }
