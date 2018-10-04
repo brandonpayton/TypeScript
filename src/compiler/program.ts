@@ -1039,6 +1039,7 @@ namespace ts {
                     const newRef = (parent ? parent.commandLine.projectReferences : projectReferences)![index];
                     const newResolvedRef = parseProjectReferenceConfigFile(newRef);
                     if (oldResolvedRef) {
+                        // TODO:: Handle files included in the ref (can change because of include pattern without change in config file)
                         // Resolved project reference has gone missing or changed
                         return !newResolvedRef || newResolvedRef.sourceFile !== oldResolvedRef.sourceFile;
                     }
